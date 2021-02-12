@@ -70,11 +70,15 @@ class ProductController extends Controller
 			
 		}
 		$dataSection = Section::get();
-		$fabricArray = ['Cotton','Polyester','wool'];
-		$sleeveArray = ['Full Sleeve','Half Sleeve','Short Sleeve','Sleeveless'];
-		$patternArray = ['Checked','Plain','Printed','Self','Solid'];
-		$fitArray = ['Regular','Slim'];
-		$occasionArray = ['Casual','Formal'];
+		
+		//added filter in dynamically product table
+		$productFilter = Product::productFilter();
+		$fabricArray = $productFilter['fabricArray'];
+		$sleeveArray = $productFilter['sleeveArray'];
+		$patternArray = $productFilter['patternArray'];
+		$fitArray = $productFilter['fitArray'];
+		$occasionArray = $productFilter['occasionArray'];
+		
 		$categories = Section::with('categories')->get();
 		$categories = json_decode(json_encode($categories));
 		$dataBrand = Brand::where('status',1)->get();

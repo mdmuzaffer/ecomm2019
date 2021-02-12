@@ -1,5 +1,5 @@
 <?php
-
+use App\Category;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,5 +75,37 @@ Route::get('/home', 'HomeController@index')->name('home');
 // Front controller
 Route::namespace('Front')->group(function () {
 	Route::get('/', 'IndexController@index');
-	Route::get('/{url}', 'ProductsController@listing');
+	
+	$CatUrl = Category::select('url')->where('status',1)->get()->pluck('url')->toArray();
+	//$url = array_column($CatUrl, 'url'); it also working
+	foreach($CatUrl as $url){
+	Route::get('/'.$url, 'ProductsController@listing');
+	}
+	Route::get('/product/{code}/{id}', 'ProductsController@productDetails');
+	Route::post('/get-attribute-price', 'ProductsController@getAttributePrice');
+	Route::post('/add-to-cart', 'ProductsController@addToCart');
+	Route::get('/cart', 'ProductsController@addCart');
+	Route::post('/update-cart-items-qwt', 'ProductsController@updatecartitemsQwt');
+	Route::post('/delete-cart-items-qwt', 'ProductsController@deletecartitemsQwt');
+	
+	//users Login route
+	Route::get('/login-register','UsersController@loginRegister');
+	Route::post('/login','UsersController@usersLogin');
+	Route::post('/register','UsersController@usersRegister');
+	Route::get('/logout','UsersController@usersLogout');
+	Route::match(['get','post'],'/my-account','UsersController@myAccount');
+	//email confirm for active account
+	Route::match(['get','post'],'/confirm/{code}','UsersController@accountCofirm');
+	//forgot password
+	Route::match(['get','post'],'/forgot-password','UsersController@forgotPassword');
+	Route::match(['get','post'],'/password-change','UsersController@passwordChange');
+	
+	// check email id exit in jquery validation
+	Route::get('/email-check','UsersController@emailCheck');
+	
+	//Contact us page
+	Route::get('/contact-us',function(){
+		echo"Contact Us";
+	});
+	
 });

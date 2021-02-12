@@ -24,10 +24,15 @@ $getSections = Section::sections();
 		          <span class="icon-bar"></span>
 		          <span class="icon-bar"></span>
 		        </a>
-		        <a class="brand" href="#">Muzaffer</a>
+		        <a class="brand" href="{{url('/')}}">Muzaffer</a>
 		        <div class="nav-collapse">
 		          <ul class="nav">
-		            <li class="active"><a href="#">Home</a></li>
+		            <li class="active"><a href="{{url('/')}}">Home</a></li>
+					<?php 
+					/* echo"<pre>";
+					print_r($getSections);
+					die; */
+					?>
 					
 					@foreach($getSections as $section)
 		            <li class="dropdown">
@@ -37,9 +42,9 @@ $getSections = Section::sections();
 						@foreach($section->categories as $category)
 		              	<li class="divider"></li>
 							
-							<li class="nav-header"><a href="#">{{$category->category_name}}</a></li>
+							<li class="nav-header"><a href="{{url('/'.$category->url)}}">{{$category->category_name}}</a></li>
 								@foreach($category->subcategories as $subcategory)
-								<li><a href="#">{{$subcategory->category_name}}</a></li>
+								<li><a href="{{url('/'.$subcategory->url)}}">{{$subcategory->category_name}}</a></li>
 								@endforeach
 								
 						@endforeach
@@ -56,7 +61,12 @@ $getSections = Section::sections();
 		          <ul class="nav pull-right">
 		            <li><a href="#">Contact</a></li>
 		            <li class="divider-vertical"></li>
-		            <li><a href="#">Login</a></li>
+					@if(Auth::check())
+		            <li><a href="{{url('my-account')}}">Account</a></li>
+		            <li><a href="{{url('logout')}}">Logout</a></li>
+					@else
+					<li><a href="{{url('login-register')}}">Login / Register</a></li>
+					@endif
 		          </ul>
 		        </div><!-- /.nav-collapse -->
 		      </div>
